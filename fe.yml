@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: f-deployment
+  labels:
+    app: fe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fe
+  template:
+    metadata:
+      labels:
+        app: fe
+    spec:
+      containers:
+      - name: fe
+        image: assiri/feathers
+        ports:
+        - containerPort: 3030
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: fscv
+  name: fsvc
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 3030
+      targetPort: 3030
+      protocol: TCP
+  selector:
+    app: fe
+
